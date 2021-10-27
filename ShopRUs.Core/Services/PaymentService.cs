@@ -25,7 +25,7 @@ namespace ShopRUs.Core.Services
             _http = http;
         }
 
-        public async Task<AddItemResponseDto> AddDiscount(AddItemRequestDto itemModel)
+        public async Task<AddItemResponseDto> AddItem(AddItemRequestDto itemModel)
         {
             try
             {
@@ -70,6 +70,20 @@ namespace ShopRUs.Core.Services
                     Status = ex.Message
                 };
             }
+        }
+
+
+        public async Task<List<GetAllItemDto>> GetAllItem()
+        {
+            var getAllItem = _context.Items.Select(x => new GetAllItemDto
+            {
+               
+                Id = x.id,
+                ItemName = x.ItemName,
+                ItemType = x.ItemType,
+                ItemAmount = x.ItemAmount
+            }).ToList();
+            return getAllItem;
         }
     }
 }
