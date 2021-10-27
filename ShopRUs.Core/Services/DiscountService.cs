@@ -17,10 +17,11 @@ namespace ShopRUs.Core.Services
         private readonly ShopRUsContext _context;
         private IConfiguration _config;
         private readonly IHttpContextAccessor _http;
-        public DiscountService(ShopRUsContext context, IConfiguration config)
+        public DiscountService(ShopRUsContext context, IConfiguration config, IHttpContextAccessor http)
         {
             _context = context;
             _config = config;
+            _http = http;
 
         }
 
@@ -46,6 +47,7 @@ namespace ShopRUs.Core.Services
                     {
                         DiscountName = discountModel.DiscountName,
                         DiscountType = discountModel.DiscountType
+
                     };
                     await _context.Discounts.AddAsync(newDiscount);
                     await _context.SaveChangesAsync();

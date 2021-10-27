@@ -18,11 +18,11 @@ namespace ShopRUs.Core.Services
         private readonly ShopRUsContext _context;
         private IConfiguration _config;
         private readonly IHttpContextAccessor _http;
-        public CustomerService(ShopRUsContext context, IConfiguration config)
+        public CustomerService(ShopRUsContext context, IConfiguration config, IHttpContextAccessor http)
         {
             _context = context;
             _config = config;
-
+            _http = http;
         }
 
       

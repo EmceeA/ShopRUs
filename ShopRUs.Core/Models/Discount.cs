@@ -10,5 +10,8 @@ namespace ShopRUs.Core.Models
         public ItemType DiscountType { get; set; }
         public string DiscountName { get; set; }
         public int DiscountPercent { get; set; }
+        public decimal DiscountPercentCalculation { get; set; }
     }
+
+    
 }
