@@ -13,6 +13,7 @@ namespace ShopRUs.Core.Interfaces
         IEnumerable<Discount> GetAll();
         Discount GetById(int id);
         Discount GetByName(string type);
-
+        Task<List<GetAllDiscountDto>> GetAllDiscount();
+        Task<List<GetAllDiscountDto>> GetDiscountById(int discountId);
     }
 }

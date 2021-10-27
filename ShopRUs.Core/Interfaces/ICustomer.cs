@@ -14,5 +14,9 @@ namespace ShopRUs.Core.Interfaces
         IEnumerable<Customer> GetAll();
         Customer GetById(int id);
         Customer GetByName(string name);
+
+        Task<List<GetAllCustomerDto>> GetAllCustomer();
+        Task<List<GetAllCustomerDto>> GetCustomerById(int customerId);
+
     }
 }
