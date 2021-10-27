@@ -169,6 +169,18 @@ namespace ShopRUs.Core.Services
             return getAllCustomer;
         }
 
+        public async Task<List<GetAllCustomerDto>> GetCustomerById(int customerId)
+        {
+            var getCustomerbyId = await _context.Customers.Where(c => c.Id == customerId)
+                .Select(w => new GetAllCustomerDto
+                {
+                    Id = w.Id,
+                   FirstName = w.FirstName,
+                   LastName = w.LastName,
+                   UserName =w.UserName
+                }).ToListAsync();
+            return getCustomerbyId;
+        }
 
     }
 }

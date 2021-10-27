@@ -57,10 +57,19 @@ namespace ShopRUs.Api.Controllers
 
         [HttpGet]
 
-        public async Task<IActionResult> GetAllCustomers()
+        public async Task<IActionResult> GetAllDiscount()
         {
             var discountList = await _discount.GetAllDiscount();
             return Ok(discountList);
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> GetDiscountbyId(int discountId)
+        {
+            var getDiscountById = await _discount.GetDiscountById(discountId);
+            return Ok(getDiscountById);
+        }
+
     }
 }

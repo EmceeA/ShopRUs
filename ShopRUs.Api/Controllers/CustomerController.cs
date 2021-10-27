@@ -87,6 +87,14 @@ namespace ShopRUs.Api.Controllers
             var customerList = await _customer.GetAllCustomer();
             return Ok(customerList);
         }
+
+        [HttpGet]
+
+        public async Task<IActionResult> GetCustomerbyId(int customerId)
+        {
+            var getCustomerById = await _customer.GetCustomerById(customerId);
+            return Ok(getCustomerById);
+        }
     }
 
 }

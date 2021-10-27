@@ -96,5 +96,17 @@ namespace ShopRUs.Core.Services
             }).ToList();
             return getAllDiscounts;
         }
+
+        public async Task<List<GetAllDiscountDto>> GetDiscountById(int discountId)
+        {
+            var getDiscountbyId = await _context.Discounts.Where(c => c.Id == discountId)
+                .Select(w => new GetAllDiscountDto
+                {
+                    Id = w.Id,
+                    DiscountName = w.DiscountName,
+                    DiscountPercent = w.DiscountPercent
+                }).ToListAsync();
+            return getDiscountbyId;
+        }
     }
 }
