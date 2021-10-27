@@ -29,8 +29,11 @@ namespace ShopRUs.Api
             services.AddControllers();
             services.AddDbContext<ShopRUsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ShopRUsContext")));
             services.AddScoped<ICustomer, CustomerService>();
+            services.AddScoped<IDiscount, DiscountService>();
+            services.AddScoped<IPayment, PaymentService>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);

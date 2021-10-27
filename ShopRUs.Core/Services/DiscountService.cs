@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShopRUs.Core.DTO;
+using ShopRUs.Core.Interfaces;
 using ShopRUs.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShopRUs.Core.Services
 {
-   public class DiscountService
+   public class DiscountService : IDiscount
     {
         private readonly ShopRUsContext _context;
         private IConfiguration _config;
