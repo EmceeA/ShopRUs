@@ -10,5 +10,8 @@ namespace ShopRUs.Core.Interfaces
     {
         Task<List<GetAllItemDto>> GetAllItem();
         Task<AddItemResponseDto> AddItem(AddItemRequestDto itemModel);
+
+        Task<CustomerItemResponseDto> AddInvoice(CustomerInvoiceRequest itemModel);
+        Task<AddCustomerTyperesponseDto> AddItemType(AddItemTypeRequestDto itemType);
     }
 }

@@ -95,6 +95,21 @@ namespace ShopRUs.Api.Controllers
             var getCustomerById = await _customer.GetCustomerById(customerId);
             return Ok(getCustomerById);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCustomerType(AddCustomerTypeRequestDto addcustomerType)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createCustomerType = await _customer.AddCustomerType(addcustomerType);
+            if (createCustomerType.Status == "Success")
+            {
+                return Ok(createCustomerType);
+            }
+            return BadRequest(createCustomerType.Status);
+        }
     }
 
 }

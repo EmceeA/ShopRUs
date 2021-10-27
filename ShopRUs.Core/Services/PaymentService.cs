@@ -45,9 +45,8 @@ namespace ShopRUs.Core.Services
                     var newItem = new Item()
                     {
                         ItemName = itemModel.ItemName,
-                        ItemType = itemModel.ItemType,
-                        ItemAmount = itemModel.ItemAmount
-                       
+                        ItemPrice = itemModel.ItemAmount
+
 
                     };
                     await _context.Items.AddAsync(newItem);
@@ -56,7 +55,7 @@ namespace ShopRUs.Core.Services
 
                 return new AddItemResponseDto
                 {
-                   ItemName = itemModel.ItemName,
+                    ItemName = itemModel.ItemName,
                     Status = "Success"
                 };
 
@@ -73,168 +72,100 @@ namespace ShopRUs.Core.Services
         }
 
 
-        public async Task<CustomerItemResponseDto> CustomerItem(CustomerItemRequestDto itemModel)
+        public async Task<List<GetAllItemDto>> GetAllItem()
+        {
+            var getAllItem = _context.Items.Select(x => new GetAllItemDto
+            {
+
+               Id = x.id,
+                ItemName = x.ItemName,
+                ItemType = x.ItemType,
+                ItemAmount = x.ItemPrice
+            }).ToList();
+            return getAllItem;
+        }
+
+
+        public async Task<CustomerItemResponseDto> AddInvoice(CustomerInvoiceRequest itemModel)
+        {
+            var invoiceDetail = new Models.InvoiceDetail();
+            double itemTotalSum = 0;
+            var invoice = new Invoice()
+            {
+               // Id = itemModel.Id,
+                //InvoiceDetails = itemModel.InvoiceDetails,
+
+
+            };
+
+            foreach (var item in itemModel.InvoiceDetails)
+            {
+                invoiceDetail.ItemTotalSum = item.ItemPrice * item.ItemQuantity * item.Item.Discount.DiscountPercent;
+                invoiceDetail.ItemQuantity = item.ItemQuantity;
+                invoiceDetail.ItemPrice = item.ItemPrice;
+                invoiceDetail.InvoiceId = item.InvoiceId;
+                invoiceDetail.Discount = item.Discount;
+                itemTotalSum += invoiceDetail.ItemTotalSum;
+
+                await _context.InvoiceDetails.AddAsync(invoiceDetail);
+            }
+
+            invoice.TotalAmount = itemTotalSum;
+            await _context.Invoices.AddAsync(invoice);
+
+            return new CustomerItemResponseDto
+            {
+                Status = "Success"
+            };
+        }
+
+
+        public async Task<AddCustomerTyperesponseDto> AddItemType(AddItemTypeRequestDto itemType)
         {
             try
             {
 
-                var getUser = await _context.Customers.Where(d => d.UserName == itemModel.UserName).AnyAsync();
-                if (getUser == false)
+                var getItemType = await _context.ItemTypes.Where(d => d.ItemTypeName == itemType.ItemTypeName).AnyAsync();
+                if (getItemType)
                 {
-                    return new CustomerItemResponseDto
+                    return new AddCustomerTyperesponseDto
                     {
-                        Status = "Customer does not exist"
+                        Status = "Item type Already Exists"
                     };
                 }
 
                 else
                 {
                     var createdDate = DateTime.Now;
-                    var newItem = new CustomerItemRequestDto()
+                    var newItemType = new ItemType()
                     {
-                        Item1 = itemModel.Item1,
-                        Item2 = itemModel.Item2,
-                        Item3 = itemModel.Item3,
-                        Item4 = itemModel.Item4,
-                        Item5 = itemModel.Item5,
+                        ItemTypeName = itemType.ItemTypeName,
+                        //DiscountType = discountModel.DiscountType
 
                     };
-                    /*await _context.Items.AddAsync(newItem);
-                    await _context.SaveChangesAsync();*/
+                    await _context.ItemTypes.AddAsync(newItemType);
+                    await _context.SaveChangesAsync();
                 }
 
-                /*return new CustomerItemResponseDto
+                return new AddCustomerTyperesponseDto
                 {
-                    Sum = newItem.
-                    ItemName = itemModel.ItemName,
+                    CustomerTypeName = itemType.ItemTypeName,
                     Status = "Success"
-                };*/
+                };
 
 
 
             }
             catch (Exception ex)
             {
-               /* return new AddItemResponseDto
+                return new AddCustomerTyperesponseDto
                 {
                     Status = ex.Message
-                };*/
+                };
             }
         }
 
 
-        public async Task<List<GetAllItemDto>> GetAllItem()
-        {
-            var getAllItem = _context.Items.Select(x => new GetAllItemDto
-            {
-               
-                Id = x.id,
-                ItemName = x.ItemName,
-                ItemType = x.ItemType,
-                ItemAmount = x.ItemAmount
-            }).ToList();
-            return getAllItem;
-        }
 
-
-
-        public async Task<CustomerItemResponseDto> PayVendor(payForItemRequestDto payForItem)
-        {
-            //var user = await _context.Customers.Where(e => e.UserName == payForItem.UserName).FirstOrDefaultAsync();
-
-            var user = await _context.Customers.Where(e => e.UserName == payForItem.UserName).AnyAsync();
-
-            if (!user)
-            {
-                return new CustomerItemResponseDto
-                {
-                   Response = "User does not exit"
-                    
-                };
-            }
-
-            if(user)
-            {
-                var addItemList = await CreateCustomerAccount(new DedicatedAccountRequest
-                {
-                    Email = signUpModel.Email,
-                    FirstName = signUpModel.FirstName,
-                    LastName = signUpModel.LastName
-                });
-
-            }
-
-            if (user.Balance < payForItem.Amount)
-            {
-                return new AddCardResponse
-                {
-                    ResponseCode = ResponseCodes.Response88Code,
-                    ResponseMessage = ResponseCodes.Response88Message,
-                };
-            }
-
-
-            var destinationWallet = await _context.WalletInfos.Where(e => e.WalletId == payForItem.DestinationWallet).FirstOrDefaultAsync();
-
-
-            if (destinationWallet == null)
-            {
-                return new AddCardResponse
-                {
-                    ResponseCode = ResponseCodes.Response33Code,
-                    ResponseMessage = ResponseCodes.Response33Message.Replace("@object", "Destination Wallet"),
-                };
-            }
-
-            //
-            //Call PayStack API here to do debit and credit
-
-            user.Balance -= payForItem.Amount;
-            destinationWallet.Balance += payForItem.Amount;
-            var customer = new CustomerInflow
-            {
-                Amount = payForItem.Amount,
-                Channel = "REZQ",
-                CurrentBalance = user.Balance,
-                CustomerId = user.CustomerId,
-                CustomerName = user.CustomerName,
-                DateCreated = DateTime.Now,
-                Narration = "REZQ" + "-" + $"{Guid.NewGuid().ToString().Replace("-", "").ToUpper()}-{user.CustomerId}",
-                PhoneNumber = user.PhoneNumber,
-                TransactionType = TransactionTypes.CREDIT,
-                TransactionTypeDescription = TransactionTypes.OUTFLOW,
-                WalletId = user.WalletId
-            };
-
-
-            var vendor = new CustomerInflow
-            {
-                Amount = payForItem.Amount,
-                Channel = "REZQ",
-                CurrentBalance = destinationWallet.Balance,
-                CustomerId = destinationWallet.CustomerId,
-                CustomerName = destinationWallet.CustomerName,
-                DateCreated = DateTime.Now,
-                Narration = "REZQ" + "-" + $"{Guid.NewGuid().ToString().Replace("-", "").ToUpper()}-{user.CustomerId}",
-                PhoneNumber = destinationWallet.PhoneNumber,
-                TransactionType = TransactionTypes.DEBIT,
-                TransactionTypeDescription = TransactionTypes.INFLOW,
-                WalletId = destinationWallet.WalletId
-            };
-
-            List<CustomerInflow> customers = new List<CustomerInflow>();
-            customers.Add(customer);
-            customers.Add(vendor);
-
-            await _context.CustomerInflows.AddRangeAsync(customers);
-            await _context.SaveChangesAsync();
-
-            return new AddCardResponse
-            {
-                ResponseCode = ResponseCodes.Response00Code,
-                ResponseMessage = ResponseCodes.Response00Message
-            };
-
-        }
     }
 }

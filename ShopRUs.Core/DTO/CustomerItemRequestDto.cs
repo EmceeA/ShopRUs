@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopRUs.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,11 +8,14 @@ namespace ShopRUs.Core.DTO
     public class CustomerItemRequestDto
     {
         public string UserName { get; set; }
-        public string Item1 { get; set; }
-        public string Item2 { get; set; }
-        public string Item3 { get; set; }
-        public string Item4 { get; set; }
-        public string Item5 { get; set; }
 
+        public ICollection<Item> Items { get; set; }
+
+       // public int Quantity { get; set; }
+
+        public Discount Discount { get; set; }
+
+        public double TotalSum { get; set; }
+        //public double UnitPrice { get; set; }
     }
 }

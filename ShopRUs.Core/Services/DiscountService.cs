@@ -46,7 +46,7 @@ namespace ShopRUs.Core.Services
                     var newDiscount = new Discount()
                     {
                         DiscountName = discountModel.DiscountName,
-                        DiscountType = discountModel.DiscountType
+                        DiscountPercent = discountModel.DiscountPercent
 
                     };
                     await _context.Discounts.AddAsync(newDiscount);
@@ -93,7 +93,7 @@ namespace ShopRUs.Core.Services
         {
             var getAllDiscounts = _context.Discounts.Select(x => new GetAllDiscountDto
             {
-                Id = x.Id,
+               Id = x.Id,
                 DiscountName = x.DiscountName,
                 DiscountPercent = x.DiscountPercent
             }).ToList();

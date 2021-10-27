@@ -53,5 +53,35 @@ namespace ShopRUs.Api.Controllers
             var itemList = await _payment.GetAllItem();
             return Ok(itemList);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddInvoice(CustomerInvoiceRequest addInvoice)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var newInvoice = await _payment.AddInvoice(addInvoice);
+            if (newInvoice.Status == "Success")
+            {
+                return Ok(newInvoice);
+            }
+            return BadRequest(newInvoice.Status);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddItemType(AddItemTypeRequestDto additemType)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createItemType = await _payment.AddItemType(additemType);
+            if (createItemType.Status == "Success")
+            {
+                return Ok(createItemType);
+            }
+            return BadRequest(createItemType.Status);
+        }
     }
 }

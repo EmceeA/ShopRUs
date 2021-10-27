@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ShopRUs.Core.DTO
 {
-   public class payForItemResponse
+    public class AddItemTypeResponseDto
     {
         public string Status { get; set; }
-        public double Sum { get; set; }
+        public string ItemTypeName { get; set; }
     }
 }
