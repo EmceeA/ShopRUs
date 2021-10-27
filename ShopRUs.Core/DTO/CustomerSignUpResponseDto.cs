@@ -12,6 +12,7 @@ namespace ShopRUs.Core.DTO
         public string UserName { get; set; }
         public string Password { get; set; }
         public CustomerType CustomerType { get; set; }
+        public int CustomerTypeId { get; set; }
         public string Status { get; set; }
         public DateTime CreatedAt { get; set; }
     }

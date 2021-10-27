@@ -16,5 +16,10 @@ namespace ShopRUs.Core
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
+        public DbSet<Item> Items { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
+        public DbSet<CustomerType> CustomerTypes { get; set; }
+        public DbSet<ItemType> ItemTypes { get; set; }
+
     }
 }

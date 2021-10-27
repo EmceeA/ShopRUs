@@ -18,11 +18,11 @@ namespace ShopRUs.Core.Services
         private readonly ShopRUsContext _context;
         private IConfiguration _config;
         private readonly IHttpContextAccessor _http;
-        public CustomerService(ShopRUsContext context, IConfiguration config)
+        public CustomerService(ShopRUsContext context, IConfiguration config, IHttpContextAccessor http)
         {
             _context = context;
             _config = config;
-
+            _http = http;
         }
 
       
@@ -32,7 +32,7 @@ namespace ShopRUs.Core.Services
             try
             {
                
-                var getCustomer = await _context.Customers.Where(d => d.UserName == signUpModel.Username).AnyAsync();
+                var getCustomer = await _context.Customers.Where(d => d.UserName == signUpModel.UserName).AnyAsync();
                 if (getCustomer)
                 {
                     return new CustomerSignUpResponseDto
@@ -40,50 +40,29 @@ namespace ShopRUs.Core.Services
                         Status = "Customer Already Enrolled"
                     };
                 }
-               
-
-                if(signUpModel.IsEmployee == false)
+                else
                 {
                     var newCustomer = new Customer()
                     {
-                        CustomerType = CustomerType.NonEmployee,
-                        UserName = signUpModel.Username,
+                        CustomerTypeId = signUpModel.CustomerTypeId,
+                        UserName = signUpModel.UserName,
                         FirstName = signUpModel.FirstName,
                         LastName = signUpModel.LastName,
                         Password = EncodePassword(signUpModel.Password),
-                        CreatedAt = DateTime.Now
+                        EntryDate = DateTime.Now
                     };
                     await _context.Customers.AddAsync(newCustomer);
                     await _context.SaveChangesAsync();
                     return new CustomerSignUpResponseDto
                     {
-                        UserName = signUpModel.Username,
+                        UserName = signUpModel.UserName,
                         FirstName = signUpModel.FirstName,
                         LastName = signUpModel.LastName,
                         Status = "Success Customer Account Created"
                     };
 
                 }
-                else 
-                {
-                    var newCustomer = new Customer()
-                    {
-                        CustomerType = CustomerType.Employee,
-                        UserName = signUpModel.Username,
-                        FirstName = signUpModel.FirstName,
-                        LastName = signUpModel.LastName,
-                        Password = EncodePassword(signUpModel.Password),
-                        CreatedAt = DateTime.Now
-                    };
-                    await _context.Customers.AddAsync(newCustomer);
-                    await _context.SaveChangesAsync();
-                    return new CustomerSignUpResponseDto
-                    {
-                        FirstName = signUpModel.FirstName,
-                        LastName = signUpModel.LastName,
-                        Status = "Success Employee Account Created"
-                    };
-                }
+               
                 
 
               /*  //09064615283
@@ -180,6 +159,52 @@ namespace ShopRUs.Core.Services
                    UserName =w.UserName
                 }).ToListAsync();
             return getCustomerbyId;
+        }
+
+        public async Task<AddCustomerTyperesponseDto> AddCustomerType(AddCustomerTypeRequestDto customerType)
+        {
+            try
+            {
+
+                var getCustomerType = await _context.CustomerTypes.Where(d => d.CustomerTypeName == customerType.CustomerTypeName).AnyAsync();
+                if (getCustomerType)
+                {
+                    return new AddCustomerTyperesponseDto
+                    {
+                        Status = "Customer type Already Exists"
+                    };
+                }
+
+                else
+                {
+                    var createdDate = DateTime.Now;
+                    var newCustomerType = new CustomerType()
+                    {
+                        CustomerTypeName = customerType.CustomerTypeName,
+                        DiscountId = customerType.DiscountId
+                        //DiscountType = discountModel.DiscountType
+
+                    };
+                    await _context.CustomerTypes.AddAsync(newCustomerType);
+                    await _context.SaveChangesAsync();
+                }
+
+                return new AddCustomerTyperesponseDto
+                {
+                    CustomerTypeName = customerType.CustomerTypeName,
+                    Status = "Success"
+                };
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return new AddCustomerTyperesponseDto
+                {
+                    Status = ex.Message
+                };
+            }
         }
 
     }

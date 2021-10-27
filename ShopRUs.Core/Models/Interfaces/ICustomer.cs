@@ -17,6 +17,7 @@ namespace ShopRUs.Core.Interfaces
 
         Task<List<GetAllCustomerDto>> GetAllCustomer();
         Task<List<GetAllCustomerDto>> GetCustomerById(int customerId);
+        Task<AddCustomerTyperesponseDto> AddCustomerType(AddCustomerTypeRequestDto customerType);
 
     }
 }

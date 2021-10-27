@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShopRUs.Core.DTO;
+using ShopRUs.Core.Interfaces;
 using ShopRUs.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -11,15 +12,16 @@ using System.Threading.Tasks;
 
 namespace ShopRUs.Core.Services
 {
-   public class DiscountService
+   public class DiscountService : IDiscount
     {
         private readonly ShopRUsContext _context;
         private IConfiguration _config;
         private readonly IHttpContextAccessor _http;
-        public DiscountService(ShopRUsContext context, IConfiguration config)
+        public DiscountService(ShopRUsContext context, IConfiguration config, IHttpContextAccessor http)
         {
             _context = context;
             _config = config;
+            _http = http;
 
         }
 
@@ -44,7 +46,8 @@ namespace ShopRUs.Core.Services
                     var newDiscount = new Discount()
                     {
                         DiscountName = discountModel.DiscountName,
-                        DiscountType = discountModel.DiscountType
+                        DiscountPercent = discountModel.DiscountPercent
+
                     };
                     await _context.Discounts.AddAsync(newDiscount);
                     await _context.SaveChangesAsync();
@@ -90,7 +93,7 @@ namespace ShopRUs.Core.Services
         {
             var getAllDiscounts = _context.Discounts.Select(x => new GetAllDiscountDto
             {
-                Id = x.Id,
+               Id = x.Id,
                 DiscountName = x.DiscountName,
                 DiscountPercent = x.DiscountPercent
             }).ToList();

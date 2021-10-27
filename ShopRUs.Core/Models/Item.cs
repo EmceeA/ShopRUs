@@ -5,11 +5,14 @@ using System.Text;
 
 namespace ShopRUs.Core.Models
 {
-    public class CustomerType
+  public class Item
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string CustomerTypeName { get; set; }
+        public int id { get; set; }
+        public string ItemName { get; set; }
+        public ItemType ItemType { get; set; }
+        public int ItemTypeId { get; set; }
+        public double ItemPrice { get; set; }
         public Discount Discount { get; set; }
         public int DiscountId { get; set; }
     }
