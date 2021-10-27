@@ -4,8 +4,9 @@ using System.Text;
 
 namespace ShopRUs.Core.DTO
 {
-    public class PaymentForItemRequest
+    public class CustomerItemRequestDto
     {
+        public string UserName { get; set; }
         public string Item1 { get; set; }
         public string Item2 { get; set; }
         public string Item3 { get; set; }
