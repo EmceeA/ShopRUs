@@ -9,5 +9,6 @@ namespace ShopRUs.Core.DTO
     {
        public string ItemName { get; set; }
         public ItemType ItemType { get; set; }
+        public double ItemAmount { get; set; }
     }
 }

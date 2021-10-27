@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopRUs.Core;
 
 namespace ShopRUs.Core.Migrations
 {
     [DbContext(typeof(ShopRUsContext))]
-    partial class ShopRUsContextModelSnapshot : ModelSnapshot
+    [Migration("20211027115744_AddItems")]
+    partial class AddItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,15 +99,12 @@ namespace ShopRUs.Core.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("ShopRUs.Core.Models.Item", b =>
+            modelBuilder.Entity("ShopRUs.Core.Models.Items", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("ItemAmount")
-                        .HasColumnType("float");
 
                     b.Property<string>("ItemName")
                         .HasColumnType("nvarchar(max)");

@@ -1,43 +1,62 @@
-﻿using ShopRUs.Core.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using ShopRUs.Core.DTO;
+using ShopRUs.Core.Interfaces;
+using ShopRUs.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ShopRUs.Core.Services
 {
     public class PaymentService : IPayment
     {
 
-        public async Task<AddDiscountResponseDto> AddDiscount(AddDiscountRequestDto discountModel)
+        private readonly ShopRUsContext _context;
+        private IConfiguration _config;
+        private readonly IHttpContextAccessor _http;
+        public PaymentService(ShopRUsContext context, IConfiguration config, IHttpContextAccessor http)
+        {
+            _context = context;
+            _config = config;
+            _http = http;
+        }
+
+        public async Task<AddItemResponseDto> AddDiscount(AddItemRequestDto itemModel)
         {
             try
             {
 
-                var getDiscount = await _context.Discounts.Where(d => d.DiscountName == discountModel.DiscountName).AnyAsync();
+                var getDiscount = await _context.Items.Where(d => d.ItemName == itemModel.ItemName).AnyAsync();
                 if (getDiscount)
                 {
-                    return new AddDiscountResponseDto
+                    return new AddItemResponseDto
                     {
-                        Status = "Discount Already Exists"
+                        Status = "Item Already Exists"
                     };
                 }
 
                 else
                 {
                     var createdDate = DateTime.Now;
-                    var newDiscount = new Discount()
+                    var newItem = new Item()
                     {
-                        DiscountName = discountModel.DiscountName,
-                        DiscountType = discountModel.DiscountType
+                        ItemName = itemModel.ItemName,
+                        ItemType = itemModel.ItemType,
+                        ItemAmount = itemModel.ItemAmount
+                       
 
                     };
-                    await _context.Discounts.AddAsync(newDiscount);
+                    await _context.Items.AddAsync(newItem);
                     await _context.SaveChangesAsync();
                 }
 
-                return new AddDiscountResponseDto
+                return new AddItemResponseDto
                 {
-                    DiscountName = discountModel.DiscountName,
+                   ItemName = itemModel.ItemName,
                     Status = "Success"
                 };
 
@@ -46,7 +65,7 @@ namespace ShopRUs.Core.Services
             }
             catch (Exception ex)
             {
-                return new AddDiscountResponseDto
+                return new AddItemResponseDto
                 {
                     Status = ex.Message
                 };
