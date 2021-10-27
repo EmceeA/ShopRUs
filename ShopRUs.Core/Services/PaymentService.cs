@@ -79,7 +79,7 @@ namespace ShopRUs.Core.Services
 
                Id = x.id,
                 ItemName = x.ItemName,
-                ItemType = x.ItemType,
+                ItemTypeId = x.ItemTypeId,
                 ItemAmount = x.ItemPrice
             }).ToList();
             return getAllItem;

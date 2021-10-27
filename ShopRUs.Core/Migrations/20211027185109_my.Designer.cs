@@ -10,8 +10,8 @@ using ShopRUs.Core;
 namespace ShopRUs.Core.Migrations
 {
     [DbContext(typeof(ShopRUsContext))]
-    [Migration("20211027181635_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20211027185109_my")]
+    partial class my
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

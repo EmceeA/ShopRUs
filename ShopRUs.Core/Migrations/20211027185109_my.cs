@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShopRUs.Core.Migrations
 {
-    public partial class InitialMigrations : Migration
+    public partial class my : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -155,12 +155,12 @@ namespace ShopRUs.Core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
                     ItemPrice = table.Column<double>(type: "float", nullable: false),
                     ItemQuantity = table.Column<int>(type: "int", nullable: false),
                     ItemTotalSum = table.Column<double>(type: "float", nullable: false),
                     Discount = table.Column<double>(type: "float", nullable: false),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false)
+                    InvoiceId = table.Column<int>(type: "int", nullable: false),
+                    ItemId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
