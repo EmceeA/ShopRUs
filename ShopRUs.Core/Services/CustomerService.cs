@@ -142,5 +142,20 @@ namespace ShopRUs.Core.Services
         }
 
 
+        public IEnumerable<Customer> GetAll()
+        {
+            return _context.Customers;
+        }
+
+        public Customer GetById(int id)
+        {
+            return _context.Customers.Find(id);
+        }
+
+        public Customer GetByName(string name)
+        {
+            return _context.Customers.Find(name);
+        }
+
     }
 }

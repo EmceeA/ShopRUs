@@ -72,12 +72,17 @@ namespace ShopRUs.Core.Services
 
         public IEnumerable<Discount> GetAll()
         {
-            return _context.Users;
+            return _context.Discounts;
         }
 
         public Discount GetById(int id)
         {
-            return _context.Users.Find(id);
+            return _context.Discounts.Find(id);
+        }
+
+        public Discount GetByName(string type)
+        {
+            return _context.Discounts.Find(type);
         }
     }
 }
