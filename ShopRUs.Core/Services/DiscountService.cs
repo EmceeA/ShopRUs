@@ -84,5 +84,17 @@ namespace ShopRUs.Core.Services
         {
             return _context.Discounts.Find(type);
         }
+
+
+        public async Task<List<GetAllDiscountDto>> GetAllDiscount()
+        {
+            var getAllDiscounts = _context.Discounts.Select(x => new GetAllDiscountDto
+            {
+                Id = x.Id,
+                DiscountName = x.DiscountName,
+                DiscountPercent = x.DiscountPercent
+            }).ToList();
+            return getAllDiscounts;
+        }
     }
 }
