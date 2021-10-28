@@ -8,7 +8,7 @@ namespace ShopRUs.Core.Models
   public class Item
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public int Id { get; set; }
         public string ItemName { get; set; }
         public ItemType ItemType { get; set; }
         public int ItemTypeId { get; set; }

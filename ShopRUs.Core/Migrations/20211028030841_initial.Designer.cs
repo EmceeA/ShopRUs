@@ -10,8 +10,8 @@ using ShopRUs.Core;
 namespace ShopRUs.Core.Migrations
 {
     [DbContext(typeof(ShopRUsContext))]
-    [Migration("20211027185109_my")]
-    partial class my
+    [Migration("20211028030841_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,9 +101,6 @@ namespace ShopRUs.Core.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ItemTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -111,8 +108,6 @@ namespace ShopRUs.Core.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemTypeId");
 
                     b.ToTable("Invoices");
                 });
@@ -153,7 +148,7 @@ namespace ShopRUs.Core.Migrations
 
             modelBuilder.Entity("ShopRUs.Core.Models.Item", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -170,7 +165,7 @@ namespace ShopRUs.Core.Migrations
                     b.Property<int>("ItemTypeId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("DiscountId");
 
@@ -204,15 +199,10 @@ namespace ShopRUs.Core.Migrations
                     b.Property<double>("ItemAmount")
                         .HasColumnType("float");
 
-                    b.Property<int>("ItemTypeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("itemName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemTypeId");
 
                     b.ToTable("Payments");
                 });
@@ -237,17 +227,6 @@ namespace ShopRUs.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Discount");
-                });
-
-            modelBuilder.Entity("ShopRUs.Core.Models.Invoice", b =>
-                {
-                    b.HasOne("ShopRUs.Core.Models.ItemType", "ItemType")
-                        .WithMany()
-                        .HasForeignKey("ItemTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ItemType");
                 });
 
             modelBuilder.Entity("ShopRUs.Core.Models.InvoiceDetail", b =>
@@ -284,17 +263,6 @@ namespace ShopRUs.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Discount");
-
-                    b.Navigation("ItemType");
-                });
-
-            modelBuilder.Entity("ShopRUs.Core.Models.Payment", b =>
-                {
-                    b.HasOne("ShopRUs.Core.Models.ItemType", "ItemType")
-                        .WithMany()
-                        .HasForeignKey("ItemTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("ItemType");
                 });

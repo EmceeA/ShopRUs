@@ -9,7 +9,7 @@ namespace ShopRUs.Core.DTO
     {
         public string UserName { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public ICollection<Item> Item { get; set; }
 
        // public int Quantity { get; set; }
 
