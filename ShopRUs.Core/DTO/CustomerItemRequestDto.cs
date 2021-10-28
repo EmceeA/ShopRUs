@@ -7,7 +7,7 @@ namespace ShopRUs.Core.DTO
 {
     public class CustomerItemRequestDto
     {
-        public string UserName { get; set; }
+       /* public string UserName { get; set; }
 
         public ICollection<Item> Item { get; set; }
 
@@ -16,6 +16,6 @@ namespace ShopRUs.Core.DTO
         public Discount Discount { get; set; }
 
         public double TotalSum { get; set; }
-        //public double UnitPrice { get; set; }
+        //public double UnitPrice { get; set; }*/
     }
 }
