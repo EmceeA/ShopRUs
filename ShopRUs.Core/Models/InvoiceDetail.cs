@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ShopRUs.Core.Models
 {
-   public class InvoiceDetail
+    public class InvoiceDetail
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

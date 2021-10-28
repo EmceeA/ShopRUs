@@ -45,7 +45,8 @@ namespace ShopRUs.Core.Services
                     var newItem = new Item()
                     {
                         ItemName = itemModel.ItemName,
-                        ItemPrice = itemModel.ItemAmount
+                        ItemPrice = itemModel.ItemAmount,
+                       ItemTypeId = itemModel.ItemTypeId,
 
 
                     };
@@ -77,7 +78,7 @@ namespace ShopRUs.Core.Services
             var getAllItem = _context.Items.Select(x => new GetAllItemDto
             {
 
-               Id = x.id,
+               Id = x.Id,
                 ItemName = x.ItemName,
                 ItemTypeId = x.ItemTypeId,
                 ItemAmount = x.ItemPrice
@@ -93,7 +94,7 @@ namespace ShopRUs.Core.Services
             var invoice = new Invoice()
             {
                // Id = itemModel.Id,
-                //InvoiceDetails = itemModel.InvoiceDetails,
+                InvoiceDetails = itemModel.InvoiceDetails,
 
 
             };
@@ -103,7 +104,7 @@ namespace ShopRUs.Core.Services
                 invoiceDetail.ItemTotalSum = item.ItemPrice * item.ItemQuantity * item.Item.Discount.DiscountPercent;
                 invoiceDetail.ItemQuantity = item.ItemQuantity;
                 invoiceDetail.ItemPrice = item.ItemPrice;
-                invoiceDetail.InvoiceId = item.InvoiceId;
+                //invoiceDetail.InvoiceId = item.InvoiceId;
                 invoiceDetail.Discount = item.Discount;
                 itemTotalSum += invoiceDetail.ItemTotalSum;
 
@@ -120,7 +121,7 @@ namespace ShopRUs.Core.Services
         }
 
 
-        public async Task<AddCustomerTyperesponseDto> AddItemType(AddItemTypeRequestDto itemType)
+        public async Task<AddItemTypeResponseDto> AddItemType(AddItemTypeRequestDto itemType)
         {
             try
             {
@@ -128,7 +129,7 @@ namespace ShopRUs.Core.Services
                 var getItemType = await _context.ItemTypes.Where(d => d.ItemTypeName == itemType.ItemTypeName).AnyAsync();
                 if (getItemType)
                 {
-                    return new AddCustomerTyperesponseDto
+                    return new AddItemTypeResponseDto
                     {
                         Status = "Item type Already Exists"
                     };
@@ -147,9 +148,9 @@ namespace ShopRUs.Core.Services
                     await _context.SaveChangesAsync();
                 }
 
-                return new AddCustomerTyperesponseDto
+                return new AddItemTypeResponseDto
                 {
-                    CustomerTypeName = itemType.ItemTypeName,
+                    ItemTypeName = itemType.ItemTypeName,
                     Status = "Success"
                 };
 
@@ -158,7 +159,7 @@ namespace ShopRUs.Core.Services
             }
             catch (Exception ex)
             {
-                return new AddCustomerTyperesponseDto
+                return new AddItemTypeResponseDto
                 {
                     Status = ex.Message
                 };

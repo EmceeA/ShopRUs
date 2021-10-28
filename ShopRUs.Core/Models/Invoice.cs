@@ -12,9 +12,9 @@ namespace ShopRUs.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        //public ItemType ItemType { get; set; }
-       // public int ItemTypeId { get; set; }
+        /*public ItemType ItemType { get; set; }
+       public int ItemTypeId { get; set; }*/
         public double TotalAmount { get; set; }
-        public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
+       public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
     }
 }

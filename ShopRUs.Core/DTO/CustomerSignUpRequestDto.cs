@@ -16,6 +16,6 @@ namespace ShopRUs.Core.DTO
         //public CustomerType CustomerType { get; set; }
         public int CustomerTypeId { get; set; }
         public DateTime EntryDate { get; set; }
-        public DateTime LastLoginDate { get; set; }
+        //public DateTime LastLoginDate { get; set; }
     }
 }
